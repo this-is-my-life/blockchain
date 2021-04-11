@@ -1,6 +1,8 @@
 package structures
 
-import "reflect"
+import (
+	"reflect"
+)
 
 type Chain struct {
 	Blocks []Block

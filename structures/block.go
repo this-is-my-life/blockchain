@@ -3,6 +3,7 @@ package structures
 import (
 	"encoding/binary"
 	"fmt"
+	"reflect"
 	"strings"
 	"time"
 
@@ -90,9 +91,37 @@ func (block *Block) MineBlock() {
 	}
 }
 
+func (block Block) IsValid() bool {
+	if !isMined(block) {
+		return false
+	}
+
+	serial := block.SerializationWithoutTail()
+	hash := make([]byte, 64)
+	sha3.ShakeSum256(hash, serial)
+
+	return reflect.DeepEqual(block.Tail.CurrHash, hash)
+}
+
 func isMined(block Block) bool {
 	hash := fmt.Sprintf("%x", block.Tail.CurrHash)
 	diff := strings.Repeat("0", int(block.Head.Difficulty))
 
 	return strings.HasPrefix(hash, diff)
+}
+
+func Deserialization(serial []byte) Block {
+	block := Block{}
+
+	block.Head.Index = binary.BigEndian.Uint16(serial[:2])
+	block.Head.CreatedAt = binary.BigEndian.Uint32(serial[2:6])
+	block.Head.PrevHash = serial[6:70]
+	block.Head.Nonce = binary.BigEndian.Uint32(serial[70:74])
+	block.Head.Difficulty = serial[74]
+
+	block.Body = serial[75 : len(serial)-64]
+
+	block.Tail.CurrHash = serial[len(serial)-64:]
+
+	return block
 }

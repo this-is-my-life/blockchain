@@ -8,9 +8,18 @@ import (
 
 func main() {
 	chain := blockchain.CreateChain()
-	chain.AddStringBlock("PMH is handsome")
 
-	fmt.Printf("%v\n", chain.GetLatestBlock())
-	fmt.Printf("%x\n", chain.GetLatestBlock().Head.PrevHash)
-	fmt.Printf("%08b\n", chain.GetLatestBlock().SerializationWithTail())
+	chain.AddStringBlock("Wa Sans")
+	chain.AddStringBlock("This is pmh-only/blockchain")
+
+	lastBlock := chain.GetLatestBlock()
+
+	fmt.Printf("nonce: %x\n", lastBlock.Head.Nonce)
+	fmt.Printf("serial: %x\n", lastBlock.SerializationWithTail())
+
+	serial := lastBlock.SerializationWithTail()
+	cloneBlock := blockchain.Deserialization(serial)
+
+	fmt.Printf("is same? %v\n", string(cloneBlock.SerializationWithTail()) == string(serial))
+	fmt.Printf("is valid? %v %v", lastBlock.IsValid(), cloneBlock.IsValid())
 }
