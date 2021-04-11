@@ -2,6 +2,8 @@ package structures
 
 import (
 	"encoding/binary"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/pmh-only/blockchain/utils"
@@ -79,4 +81,18 @@ func (block Block) SerializationWithoutTail() []byte {
 
 func (block Block) SerializationWithTail() []byte {
 	return append(block.SerializationWithoutTail(), block.CaculateHash()...)
+}
+
+func (block *Block) MineBlock() {
+	for !isMined(*block) {
+		block.Head.Nonce++
+		block.Tail.CurrHash = block.CaculateHash()
+	}
+}
+
+func isMined(block Block) bool {
+	hash := fmt.Sprintf("%x", block.Tail.CurrHash)
+	diff := strings.Repeat("0", int(block.Head.Difficulty))
+
+	return strings.HasPrefix(hash, diff)
 }

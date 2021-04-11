@@ -8,12 +8,9 @@ import (
 
 func main() {
 	chain := blockchain.CreateChain()
-	block := chain.AddStringBlock("PMH is handsome")
+	chain.AddStringBlock("PMH is handsome")
 
-	fmt.Printf("%x\n", block.SerializationWithTail())
-	fmt.Printf("%v\n", chain.IsValid())
-
-	chain.Blocks[1].Body = []byte("sans")
-
-	fmt.Printf("%v\n", chain.IsValid())
+	fmt.Printf("%v\n", chain.GetLatestBlock())
+	fmt.Printf("%x\n", chain.GetLatestBlock().Head.PrevHash)
+	fmt.Printf("%08b\n", chain.GetLatestBlock().SerializationWithTail())
 }

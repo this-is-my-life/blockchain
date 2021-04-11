@@ -26,12 +26,12 @@ func (chain Chain) GetLatestBlock() Block {
 
 func (chain *Chain) AddBlock(newBlock Block) {
 	newBlock.Head.PrevHash = chain.GetLatestBlock().Tail.CurrHash
-	newBlock.Tail.CurrHash = newBlock.CaculateHash()
+	newBlock.MineBlock()
 
 	chain.Blocks = append(chain.Blocks, newBlock)
 }
 
-func (chain *Chain) AddStringBlock(data string) Block {
+func (chain *Chain) AddStringBlock(data string) {
 	latestBlock := chain.GetLatestBlock()
 	newBlock := CreateBlock(
 		latestBlock.Head.Index+1,
@@ -39,8 +39,6 @@ func (chain *Chain) AddStringBlock(data string) Block {
 		latestBlock.Head.Difficulty, []byte(data))
 
 	chain.AddBlock(newBlock)
-
-	return newBlock
 }
 
 func (chain Chain) IsValid() bool {
