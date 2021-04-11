@@ -25,6 +25,8 @@ func main() {
 
 	chain := blockchain.Load("./data")
 
-	fmt.Printf("%v", chain)
-	println(chain.IsValid())
+	fmt.Printf("%v\n", chain.GetLatestBlock().SerializationWithTail())
+	fmt.Printf("%v %v", len(chain.Blocks), chain.IsValid())
+
+	chain.Save("./data")
 }

@@ -10,7 +10,7 @@ func Load(path string) Chain {
 	chain := Chain{}
 	chain.Blocks = []Block{}
 
-	db, err := badger.Open(badger.DefaultOptions(path))
+	db, err := badger.Open(badger.DefaultOptions(path).WithLogger(nil))
 	if err != nil {
 		panic(err)
 	}
@@ -43,4 +43,23 @@ func Load(path string) Chain {
 	}
 
 	return chain
+}
+
+func (chain Chain) Save(path string) {
+	db, err := badger.Open(badger.DefaultOptions(path).WithLogger(nil))
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	_ = db.Update(func(txn *badger.Txn) error {
+		for _, block := range chain.Blocks {
+			key := make([]byte, 2)
+			binary.BigEndian.PutUint16(key, block.Head.Index)
+
+			txn.Set(key, block.SerializationWithTail())
+		}
+
+		return nil
+	})
 }
