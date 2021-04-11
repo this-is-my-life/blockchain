@@ -1,4 +1,4 @@
-package structures
+package blockchain
 
 import (
 	"encoding/binary"
