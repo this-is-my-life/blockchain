@@ -3,11 +3,17 @@ package main
 import (
 	"fmt"
 
-	chain "github.com/pmh-only/blockchain/structures"
+	blockchain "github.com/pmh-only/blockchain/structures"
 )
 
 func main() {
-	block := chain.CreateBlock(0, []byte{0}, 3, 4, []byte("hi"))
-	println(block.Head.CreatedAt)
-	fmt.Printf("%08b", block.SerializationWithTail())
+	chain := blockchain.CreateChain()
+	block := chain.AddStringBlock("PMH is handsome")
+
+	fmt.Printf("%x\n", block.SerializationWithTail())
+	fmt.Printf("%v\n", chain.IsValid())
+
+	chain.Blocks[1].Body = []byte("sans")
+
+	fmt.Printf("%v\n", chain.IsValid())
 }
