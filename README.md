@@ -41,8 +41,8 @@ Block Structure:
 Block{
   Head: {
     Index: 0,
-    CreatedAt: 1618114690
-    PrevHash: 0
+    CreatedAt: 1618114690,
+    PrevHash: 0,
     Nonce: 3, // there is no pow yet
     Difficulty: 4
   },
