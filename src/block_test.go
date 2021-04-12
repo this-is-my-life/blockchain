@@ -9,7 +9,7 @@ import (
 )
 
 func TestCreateBlock(t *testing.T) {
-	block := blockchain.CreateBlock(0, []byte{}, 0, 0, blockchain.DATA, []byte{})
+	block := blockchain.CreateBlock(0, []byte{}, blockchain.DATA, []byte{})
 
 	got := block.IsValid()
 	want := true
@@ -81,8 +81,9 @@ func TestSerialization(t *testing.T) {
 }
 
 func TestIsValid(t *testing.T) {
-	block := blockchain.CreateBlock(0, []byte{}, 0, 0, blockchain.DATA, []byte("alice"))
+	block := blockchain.CreateBlock(0, []byte{}, blockchain.DATA, []byte("alice"))
 
+	block.MineBlock()
 	got := block.IsValid()
 	want := true
 
@@ -101,7 +102,7 @@ func TestIsValid(t *testing.T) {
 }
 
 func TestMining(t *testing.T) {
-	block := blockchain.CreateBlock(0, []byte{}, 0, blockchain.START_DIFFICULTY, blockchain.DATA, []byte("alice"))
+	block := blockchain.CreateBlock(1024, []byte{}, blockchain.DATA, []byte("alice"))
 
 	got := block.IsMined()
 	want := false

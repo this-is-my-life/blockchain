@@ -32,7 +32,7 @@ func TestAddBlock(t *testing.T) {
 
 	newBlock := blockchain.CreateBlock(
 		1, genesis.Tail.CurrHash,
-		0, 4, blockchain.DATA, []byte("alice"),
+		blockchain.DATA, []byte("alice"),
 	)
 
 	chain.AddBlock(newBlock)

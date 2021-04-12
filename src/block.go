@@ -10,14 +10,14 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-func CreateBlock(index uint16, prevHash []byte, nonce uint32, difficulty uint8, flag BodyFlags, message []byte) Block {
+func CreateBlock(index uint16, prevHash []byte, flag BodyFlags, message []byte) Block {
 	block := Block{}
 
 	block.Head.Index = index
 	block.Head.CreatedAt = uint32(time.Now().Unix())
 	block.Head.PrevHash = prevHash
-	block.Head.Nonce = nonce
-	block.Head.Difficulty = difficulty
+	block.Head.Nonce = 0
+	block.Head.Difficulty = START_DIFFICULTY + uint8(index/DIFFICULTY_INCREASE_STEP)
 
 	block.Body.Flag = flag
 	block.Body.Message = message
@@ -71,6 +71,10 @@ func (block *Block) MineBlock() {
 
 func (block Block) IsValid() bool {
 	if !block.IsMined() {
+		return false
+	}
+
+	if START_DIFFICULTY+uint8(block.Head.Index/DIFFICULTY_INCREASE_STEP) != block.Head.Difficulty {
 		return false
 	}
 

@@ -15,8 +15,7 @@ func CreateChain() Chain {
 
 func (chain *Chain) CreateGenesisBlock() {
 	genesis := CreateBlock(
-		0, []byte{0}, 0,
-		START_DIFFICULTY,
+		0, []byte{0},
 		GENESIS, []byte{},
 	)
 	genesis.MineBlock()
@@ -38,8 +37,7 @@ func (chain *Chain) AddStringBlock(data string) {
 	latestBlock := chain.GetLatestBlock()
 	newBlock := CreateBlock(
 		latestBlock.Head.Index+1,
-		latestBlock.Tail.CurrHash, 0,
-		latestBlock.Head.Difficulty,
+		latestBlock.Tail.CurrHash,
 		DATA, []byte(data),
 	)
 
