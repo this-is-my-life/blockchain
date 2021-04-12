@@ -1,6 +1,9 @@
 # pmh-only/blockchain
 비효율적일지도 모를 블록체인
 
+> [디스커션](https://github.com/pmh-only/blockchain/discussions)에서 여러가지 토의를 진행중입니다\
+> 개선할 점이나 아이디어, 질문이 있을경우 [디스커션](https://github.com/pmh-only/blockchain/discussions)텝을 활용해 주세요
+
 ## 블럭 구조
 각 블럭은 `Head`, `Body`, `Tail`로 구성됩니다.
 

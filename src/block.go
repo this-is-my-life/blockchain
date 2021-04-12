@@ -66,14 +66,14 @@ func (block Block) SerializationWithTail() []byte {
 }
 
 func (block *Block) MineBlock() {
-	for !isMined(*block) {
+	for !block.IsMined() {
 		block.Head.Nonce++
 		block.Tail.CurrHash = block.CaculateHash()
 	}
 }
 
 func (block Block) IsValid() bool {
-	if !isMined(block) {
+	if !block.IsMined() {
 		return false
 	}
 
@@ -84,7 +84,7 @@ func (block Block) IsValid() bool {
 	return reflect.DeepEqual(block.Tail.CurrHash, hash)
 }
 
-func isMined(block Block) bool {
+func (block Block) IsMined() bool {
 	hash := fmt.Sprintf("%x", block.Tail.CurrHash)
 	diff := strings.Repeat("0", int(block.Head.Difficulty))
 
