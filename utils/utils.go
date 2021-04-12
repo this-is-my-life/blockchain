@@ -1,5 +1,16 @@
 package utils
 
+import "fmt"
+
+func BytesToBinString(bb []byte) string {
+	str := ""
+	for _, b := range bb {
+		str += fmt.Sprintf("%08b", b)
+	}
+
+	return str
+}
+
 // from https://stackoverflow.com/a/39281081
 func PadOrTrim(bb []byte, size int) []byte {
 	l := len(bb)

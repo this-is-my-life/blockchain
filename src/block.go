@@ -2,7 +2,6 @@ package blockchain
 
 import (
 	"encoding/binary"
-	"fmt"
 	"reflect"
 	"strings"
 	"time"
@@ -85,7 +84,7 @@ func (block Block) IsValid() bool {
 }
 
 func (block Block) IsMined() bool {
-	hash := fmt.Sprintf("%x", block.Tail.CurrHash)
+	hash := utils.BytesToBinString(block.Tail.CurrHash)
 	diff := strings.Repeat("0", int(block.Head.Difficulty))
 
 	return strings.HasPrefix(hash, diff)

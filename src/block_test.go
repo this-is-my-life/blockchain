@@ -101,7 +101,7 @@ func TestIsValid(t *testing.T) {
 }
 
 func TestMining(t *testing.T) {
-	block := blockchain.CreateBlock(0, []byte{}, 0, 4, blockchain.DATA, []byte("alice"))
+	block := blockchain.CreateBlock(0, []byte{}, 0, blockchain.START_DIFFICULTY, blockchain.DATA, []byte("alice"))
 
 	got := block.IsMined()
 	want := false

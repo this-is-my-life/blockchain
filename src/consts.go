@@ -6,4 +6,4 @@ const (
 	DATA    BodyFlags = 2
 )
 
-const START_DIFFICULTY = 4
+const START_DIFFICULTY = 21
