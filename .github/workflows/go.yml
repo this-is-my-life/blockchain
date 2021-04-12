@@ -20,6 +20,8 @@ jobs:
 
       - name: Build
         run: go build -v /home/runner/go/src/github.com/pmh-only/blockchain
+        working-directory: /home/runner/go/src/github.com/pmh-only/blockchain
 
       - name: Test
         run: go test -v /home/runner/go/src/github.com/pmh-only/blockchain/src
+        working-directory: /home/runner/go/src/github.com/pmh-only/blockchain
