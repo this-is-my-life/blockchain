@@ -48,17 +48,17 @@ func (chain *Chain) AddStringBlock(data string) {
 
 func (chain Chain) IsValid() bool {
 	for index := range chain.Blocks {
-		if index < 1 {
-			continue
-		}
-
 		currBlock := chain.Blocks[index]
-		prevBlock := chain.Blocks[index-1]
 
-		if !reflect.DeepEqual(currBlock.Tail.CurrHash, currBlock.CaculateHash()) {
+		if !currBlock.IsValid() {
 			return false
 		}
 
+		if index < 1 {
+			return true
+		}
+
+		prevBlock := chain.Blocks[index-1]
 		if !reflect.DeepEqual(currBlock.Head.PrevHash, prevBlock.Tail.CurrHash) {
 			return false
 		}

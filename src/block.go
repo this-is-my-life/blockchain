@@ -10,8 +10,6 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-const SIZE_OF_HEAD = 2 + 4 + 64 + 4 + 1
-
 func CreateBlock(index uint16, prevHash []byte, nonce uint32, difficulty uint8, flag BodyFlags, message []byte) Block {
 	block := Block{}
 

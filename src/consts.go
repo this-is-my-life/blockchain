@@ -6,4 +6,6 @@ const (
 	DATA    BodyFlags = 2
 )
 
-const START_DIFFICULTY = 21
+const START_DIFFICULTY = 1
+
+const SIZE_OF_HEAD = 2 + 4 + 64 + 4 + 1
