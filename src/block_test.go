@@ -10,6 +10,7 @@ import (
 
 func TestCreateBlock(t *testing.T) {
 	block := blockchain.CreateBlock(0, []byte{}, blockchain.DATA, []byte{})
+	block.MineBlock()
 
 	got := block.IsValid()
 	want := true
