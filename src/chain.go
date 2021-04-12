@@ -4,17 +4,6 @@ import (
 	"reflect"
 )
 
-const START_DIFFICULTY = 4
-
-type Chain struct {
-	Blocks []Block
-}
-
-type BodyStructure struct {
-	Flag    string `json:"flag"`
-	Message string `json:"message"`
-}
-
 func CreateChain() Chain {
 	chain := Chain{
 		Blocks: []Block{},

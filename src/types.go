@@ -25,8 +25,11 @@ type BlockTail struct {
 
 type BodyFlags byte
 
-const (
-	GENESIS BodyFlags = 0
-	PEER    BodyFlags = 1
-	DATA    BodyFlags = 2
-)
+type Chain struct {
+	Blocks []Block
+}
+
+type BodyStructure struct {
+	Flag    string `json:"flag"`
+	Message string `json:"message"`
+}
