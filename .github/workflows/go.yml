@@ -15,9 +15,8 @@ jobs:
         with:
           go-version: 1.16
 
-      - uses: actions/checkout@v2
-        with:
-          path: '/home/runner/go/src/github.com/pmh-only/blockchain'
+      - name: Clone
+        run: 'git clone https://github.com/pmh-only/blockchain.git /home/runner/go/src/github.com/pmh-only/blockchain'
 
       - name: Build
         run: go build -v /home/runner/go/src/github.com/pmh-only/blockchain
