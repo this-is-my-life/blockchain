@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"encoding/binary"
+	"os"
 
 	"github.com/dgraph-io/badger/v3"
 )
@@ -62,4 +63,8 @@ func (chain Chain) Save(path string) {
 
 		return nil
 	})
+}
+
+func (chain Chain) Drop(path string) {
+	os.RemoveAll(path)
 }

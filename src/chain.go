@@ -4,8 +4,15 @@ import (
 	"reflect"
 )
 
+const START_DIFFICULTY = 4
+
 type Chain struct {
 	Blocks []Block
+}
+
+type BodyStructure struct {
+	Flag    string `json:"flag"`
+	Message string `json:"message"`
 }
 
 func CreateChain() Chain {
@@ -18,7 +25,12 @@ func CreateChain() Chain {
 }
 
 func (chain *Chain) CreateGenesisBlock() {
-	genesis := CreateBlock(0, []byte{0}, 3, 4, []byte("{\"type\":\"GENESIS\"}"))
+	genesis := CreateBlock(
+		0, []byte{0}, 0,
+		START_DIFFICULTY,
+		GENESIS, []byte{},
+	)
+	genesis.MineBlock()
 	chain.Blocks = append(chain.Blocks, genesis)
 }
 
@@ -38,7 +50,9 @@ func (chain *Chain) AddStringBlock(data string) {
 	newBlock := CreateBlock(
 		latestBlock.Head.Index+1,
 		latestBlock.Tail.CurrHash, 0,
-		latestBlock.Head.Difficulty, []byte(data))
+		latestBlock.Head.Difficulty,
+		DATA, []byte(data),
+	)
 
 	chain.AddBlock(newBlock)
 }

@@ -11,29 +11,9 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-type Block struct {
-	Head BlockHead
-	Body BlockBody
-	Tail BlockTail
-}
-
 const SIZE_OF_HEAD = 2 + 4 + 64 + 4 + 1
 
-type BlockHead struct {
-	Index      uint16
-	CreatedAt  uint32
-	PrevHash   []byte
-	Nonce      uint32
-	Difficulty uint8
-}
-
-type BlockBody []byte
-
-type BlockTail struct {
-	CurrHash []byte
-}
-
-func CreateBlock(index uint16, prevHash []byte, nonce uint32, difficulty uint8, body []byte) Block {
+func CreateBlock(index uint16, prevHash []byte, nonce uint32, difficulty uint8, flag BodyFlags, message []byte) Block {
 	block := Block{}
 
 	block.Head.Index = index
@@ -42,7 +22,8 @@ func CreateBlock(index uint16, prevHash []byte, nonce uint32, difficulty uint8, 
 	block.Head.Nonce = nonce
 	block.Head.Difficulty = difficulty
 
-	block.Body = body
+	block.Body.Flag = flag
+	block.Body.Message = message
 
 	block.Tail.CurrHash = block.CaculateHash()
 
@@ -58,7 +39,7 @@ func (block Block) CaculateHash() []byte {
 
 func (block Block) SerializationWithoutTail() []byte {
 	head := make([]byte, 0, SIZE_OF_HEAD)
-	body := []byte(string(block.Body))
+	body := append([]byte{byte(block.Body.Flag)}, block.Body.Message...)
 
 	index := make([]byte, 2)
 	createdAt := make([]byte, 4)
@@ -119,7 +100,8 @@ func Deserialization(serial []byte) Block {
 	block.Head.Nonce = binary.BigEndian.Uint32(serial[70:74])
 	block.Head.Difficulty = serial[74]
 
-	block.Body = serial[75 : len(serial)-64]
+	block.Body.Flag = BodyFlags(serial[75])
+	block.Body.Message = serial[76 : len(serial)-64]
 
 	block.Tail.CurrHash = serial[len(serial)-64:]
 
