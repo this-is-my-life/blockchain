@@ -1,6 +1,11 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"strings"
+)
 
 func BytesToBinString(bb []byte) string {
 	str := ""
@@ -9,6 +14,21 @@ func BytesToBinString(bb []byte) string {
 	}
 
 	return str
+}
+
+func GetPublicIp() string {
+	res, err := http.Get("http://ip-api.com/line")
+	if err != nil {
+		panic(err)
+	}
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	split := strings.Split(string(body), "\n")
+	return split[len(split)-2]
 }
 
 // from https://stackoverflow.com/a/39281081

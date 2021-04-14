@@ -1,6 +1,7 @@
 package blockchain
 
 import (
+	"encoding/json"
 	"reflect"
 )
 
@@ -44,6 +45,19 @@ func (chain *Chain) AddStringBlock(data string) {
 	chain.AddBlock(newBlock)
 }
 
+func (chain *Chain) AddPeerBlock(peer Peer) {
+	data, _ := json.Marshal(peer.data)
+
+	latestBlock := chain.GetLatestBlock()
+	newBlock := CreateBlock(
+		latestBlock.Head.Index+1,
+		latestBlock.Tail.CurrHash,
+		PEER, data,
+	)
+
+	chain.AddBlock(newBlock)
+}
+
 func (chain Chain) IsValid() bool {
 	for index := range chain.Blocks {
 		currBlock := chain.Blocks[index]
@@ -63,4 +77,28 @@ func (chain Chain) IsValid() bool {
 	}
 
 	return true
+}
+
+func (chain Chain) GetPeers() []Peer {
+	peers := []Peer{}
+	for _, block := range chain.Blocks {
+		if block.Body.Flag != PEER {
+			continue
+		}
+
+		if !block.IsValid() {
+			continue
+		}
+
+		peer := Peer{}
+		json.Unmarshal(block.Body.Message, &peer.data)
+
+		if peer.data.Version != PEER_NETWORK_VERSION {
+			continue
+		}
+
+		peers = append(peers, peer)
+	}
+
+	return peers
 }

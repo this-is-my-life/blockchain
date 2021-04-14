@@ -1,8 +1,12 @@
 package main
 
 import (
+	"bufio"
+	"encoding/binary"
 	"fmt"
+	"net"
 	"os"
+	"strconv"
 	"strings"
 
 	blockchain "github.com/pmh-only/blockchain/src"
@@ -74,5 +78,45 @@ func main() {
 		chain.Drop(DATA_DIRECTORY)
 
 		println("Dropped")
+	}
+
+	if subcmd == "serve" {
+		if len(args) < 2 {
+			println("Uncompleted Subcommand")
+			return
+		}
+
+		port, _ := strconv.Atoi(args[1])
+		peer := chain.CreatePeer(port)
+
+		chain.AddPeerBlock(peer)
+		chain.Save(DATA_DIRECTORY)
+
+		peer.Open()
+	}
+
+	if subcmd == "client-test" {
+		if len(args) < 3 {
+			println("Uncompleted Subcommand")
+			return
+		}
+
+		packet := make([]byte, 2048)
+
+		indexraw, _ := strconv.Atoi(args[2])
+		index := make([]byte, 2)
+
+		binary.BigEndian.PutUint16(index, uint16(indexraw))
+
+		conn, _ := net.Dial("udp", args[1])
+		conn.Write(index)
+
+		_, err := bufio.NewReader(conn).Read(packet)
+		if err == nil {
+			fmt.Printf("%s\n", packet)
+		} else {
+			fmt.Printf("Some error %v\n", err)
+		}
+		conn.Close()
 	}
 }

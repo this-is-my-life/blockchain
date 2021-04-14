@@ -33,3 +33,14 @@ type BodyStructure struct {
 	Flag    string `json:"flag"`
 	Message string `json:"message"`
 }
+
+type Peer struct {
+	chain *Chain
+	data  PeerData
+}
+
+type PeerData struct {
+	Address string `json:"address"`
+	Port    int    `json:"port"`
+	Version string `json:"version"`
+}
